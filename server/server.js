@@ -3,6 +3,8 @@ const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
 
+const { generateMessage } = require('./utils/message')
+
 const app = express();
 const publicPath = path.join(__dirname + '/../public');
 const port = process.env.PORT || 3000;
@@ -34,18 +36,10 @@ io.on('connection', (socket) => {
     // });
 
     // Emite uma mensagem apenas para quem está se conectando
-    socket.emit('newMessage', {
-        from: 'Admin',
-        text: 'Welcome to the chat app',
-        createdAt: new Date().getTime()
-    }); 
+    socket.emit('newMessage', generateMessage('Admin', 'Welcome to the chat app')); 
 
     // Emite uma mensagem para todos, menos para quem está se conectando
-    socket.broadcast.emit('newMessage', {
-        from: 'Admin',
-        text: 'New user joined',
-        createdAt: new Date().getTime()
-    });
+    socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
@@ -53,11 +47,7 @@ io.on('connection', (socket) => {
 
 
         // Emite a mensagem para todos incluindo o cliente que emitiu
-        io.emit('newMessage', {
-            from: message.from,
-            text: message.text,
-            createdAt: new Date().getTime()
-        })
+        io.emit('newMessage', generateMessage(message.from, message.text));
 
         // Emite a mensagem para todos, menos o cliente que emitiu
         // socket.broadcast.emit('newMessage', {
