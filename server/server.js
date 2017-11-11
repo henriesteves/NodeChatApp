@@ -23,18 +23,25 @@ io.on('connection', (socket) => {
     //     createdAt: 123
     // });
 
-    socket.emit('newMessage', {
-        from: 'Steve',
-        text: 'Hello to all',
-        createdAt: 123
-    });
+    // socket.emit('newMessage', {
+    //     from: 'Steve',
+    //     text: 'Hello to all',
+    //     createdAt: 123
+    // });
 
     // socket.on('createEmail', (newEmail) => {
     //     console.log('creatEmail', newEmail);
     // });
 
     socket.on('createMessage', (message) => {
-        console.log('createMessage', message)
+        console.log('createMessage', message);
+
+        // Emite a mensagem para todos
+        io.emit('newMessage', {
+            from: message.from,
+            text: message.text,
+            createdAt: new Date().getTime()
+        })
     });
 
     socket.on('disconnect', () => {

@@ -8,10 +8,10 @@ socket.on('connect', function () {
   //   text: 'Hey Lola, where is my sock'
   // })
 
-  socket.emit('createMessage', {
-    from: 'Lola',
-    text: 'Hey Steve, feed me'
-  })
+  // socket.emit('createMessage', {
+  //   from: 'Lola',
+  //   text: 'Hey Steve, feed me'
+  // })
 });
 
 // socket.on('newEmail', function (email) {
