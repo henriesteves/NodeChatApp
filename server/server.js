@@ -33,15 +33,38 @@ io.on('connection', (socket) => {
     //     console.log('creatEmail', newEmail);
     // });
 
+    // Emite uma mensagem apenas para quem está se conectando
+    socket.emit('newMessage', {
+        from: 'Admin',
+        text: 'Welcome to the chat app',
+        createdAt: new Date().getTime()
+    }); 
+
+    // Emite uma mensagem para todos, menos para quem está se conectando
+    socket.broadcast.emit('newMessage', {
+        from: 'Admin',
+        text: 'New user joined',
+        createdAt: new Date().getTime()
+    });
+
     socket.on('createMessage', (message) => {
         console.log('createMessage', message);
 
-        // Emite a mensagem para todos
+
+
+        // Emite a mensagem para todos incluindo o cliente que emitiu
         io.emit('newMessage', {
             from: message.from,
             text: message.text,
             createdAt: new Date().getTime()
         })
+
+        // Emite a mensagem para todos, menos o cliente que emitiu
+        // socket.broadcast.emit('newMessage', {
+        //     from: message.from,
+        //     text: message.text,
+        //     createdAt: new Date().getTime()
+        // });
     });
 
     socket.on('disconnect', () => {
