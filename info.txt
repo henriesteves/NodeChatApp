@@ -1,0 +1,2 @@
+- com o socket.io, podemos acessar o arquivo:
+  http://localhost:3000/socket.io/socket.io.js
