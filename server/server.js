@@ -41,13 +41,12 @@ io.on('connection', (socket) => {
     // Emite uma mensagem para todos, menos para quem está se conectando
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         console.log('createMessage', message);
-
-
 
         // Emite a mensagem para todos incluindo o cliente que emitiu
         io.emit('newMessage', generateMessage(message.from, message.text));
+        callback('This is from the server');
 
         // Emite a mensagem para todos, menos o cliente que emitiu
         // socket.broadcast.emit('newMessage', {
