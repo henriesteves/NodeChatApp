@@ -31,6 +31,17 @@ function scrollToBotton () {
 socket.on('connect', function () {
   console.log('Connected to server'); 
 
+  var params = deparam(window.location.search);
+
+  socket.emit('join', params, function (err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('No error');
+    }
+  });
+
   // socket.emit('createEmail', {
   //   to: 'lola@example.com',
   //   text: 'Hey Lola, where is my sock'
@@ -45,6 +56,29 @@ socket.on('connect', function () {
 // socket.on('newEmail', function (email) {
 //   console.log('New email', email);
 // });
+
+socket.on('updateUserList', function (users) {
+  console.log('User list', users);
+
+  var usersList = document.getElementById('users');
+  usersList.innerHTML = '';
+  var ol = document.createElement('ol');
+
+  users.forEach(function (user) {
+    var li = document.createElement('li');
+    var text = document.createTextNode(user);
+    
+    ol.appendChild(li);
+    li.appendChild(text);
+
+  });
+
+  console.log(ol);
+
+  usersList.appendChild(ol);
+
+  console.log(usersList);
+});
 
 socket.on('newMessage', function (message) {
   console.log('New message', message)
