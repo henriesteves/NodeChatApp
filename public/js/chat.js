@@ -58,7 +58,7 @@ socket.on('connect', function () {
 // });
 
 socket.on('updateUserList', function (users) {
-  console.log('User list', users);
+  //console.log('User list', users);
 
   var usersList = document.getElementById('users');
   usersList.innerHTML = '';
@@ -73,15 +73,15 @@ socket.on('updateUserList', function (users) {
 
   });
 
-  console.log(ol);
+  //console.log(ol);
 
   usersList.appendChild(ol);
 
-  console.log(usersList);
+  //console.log(usersList);
 });
 
 socket.on('newMessage', function (message) {
-  console.log('New message', message)
+  //console.log('New message', message)
 
   var formattedTime = moment(message.crearedAt).format('h:mm a');
   var template = document.getElementById('message-template').innerHTML;
@@ -145,7 +145,6 @@ jQuery('#message-form').on('submit', function (e) {
   var messageTextbox = jQuery('[name=message]');
 
   socket.emit('createMessage', {
-    from: 'User',
     text: messageTextbox.val()
   }, function () {
     messageTextbox.val('');
@@ -163,7 +162,7 @@ locationButton.addEventListener('click', function () {
   locationButton.innerHTML = 'Sending location...';
 
   navigator.geolocation.getCurrentPosition(function (position) {
-    console.log(position);
+    //console.log(position);
 
     locationButton.disabled = false;
     locationButton.innerHTML = 'Send location';
