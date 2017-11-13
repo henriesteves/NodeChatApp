@@ -1,5 +1,33 @@
 var socket = io();
 
+function scrollToBotton () {
+  // Selectors
+  var messages = document.getElementById('messages');
+  var newMessage = messages.lastElementChild;
+
+  //console.log(messages)
+  //console.log(newMessage)
+
+  // Heights
+  var scrollTop = messages.scrollTop;
+  var clientHeight = messages.clientHeight;
+  var scrollHeight = messages.scrollHeight;
+  var newMessageHeight = newMessage.clientHeight;
+  var lastMessageHeight = newMessage.previousElementSibling ? newMessage.previousElementSibling.clientHeight : 0;
+  //var lastMessageHeight = newMessage.clientHeight;
+
+  //console.log(scrollTop);
+  //console.log(clientHeight);
+  //console.log(scrollHeight);
+  //console.log('New Message:', newMessageHeight);
+  //console.log('Last Message:', lastMessageHeight);
+  
+  if (clientHeight + scrollTop + newMessageHeight + lastMessageHeight >= scrollHeight) {
+    //console.log('Should scroll')
+    messages.scrollTop = scrollHeight
+  }
+}
+
 socket.on('connect', function () {
   console.log('Connected to server'); 
 
@@ -29,8 +57,10 @@ socket.on('newMessage', function (message) {
     createdAt: formattedTime
   });
 
-  console.log(html);
+  //console.log(html);
   jQuery('#messages').append(html);
+
+  scrollToBotton();
 
   //document.getElementById('messages').appendChild(html);
   
@@ -51,6 +81,8 @@ socket.on('newLocationMessage', function (message) {
   });
 
   jQuery('#messages').append(html);
+
+  scrollToBotton();
 
   // var formattedTime = moment(message.crearedAt).format('h:mm a');
   // var li = jQuery('<li></li>');
@@ -83,6 +115,7 @@ jQuery('#message-form').on('submit', function (e) {
     text: messageTextbox.val()
   }, function () {
     messageTextbox.val('');
+    messageTextbox.focus();
   });
 });
 
